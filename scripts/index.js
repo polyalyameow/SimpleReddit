@@ -1,3 +1,7 @@
+
+
+
+
 function getAllPosts() {
     fetch('https://dummyjson.com/posts')
         .then((res) => res.json())
@@ -23,9 +27,13 @@ function getAllPosts() {
         .then((postsWithComments) => {
             console.log(postsWithComments);
             let output = "";
+
+          
+
             for (const { post, comments } of postsWithComments) {
+
                 output += `
-                    <div class="post__main border border-2 border-secondary rounded my-3 p-3">
+                    <div class="post__main border my-3 p-3">
                         <p class="post__title text-bg-primary p-3">${post.title}</p>
                         <p class="post__content">${post.body}</p>
                         <div class="post__tags">Tags: ${post.tags}</div>
@@ -33,21 +41,34 @@ function getAllPosts() {
                             <button type="button" class="btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
                                 <i class="bi bi-heart pe-1"></i><p class="fs-6 mb-0">${post.reactions}</p>
                             </button>
-                            <button type="button" class="btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
+                            <button type="button" class="commentBtn btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
                                 <i class="bi bi-chat"></i>
                             </button>
                         </div>
-                        <div>
-                            <ul>
-                                ${comments.map(comment => `<li>${comment.body}</li>`).join('')}
+                        <div class="commentsDiv container d-none">
+                            <ul  class="list-group">
+                                ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
                             </ul>
                         </div>
                     </div>`;
             }
 
             document.querySelector(".post").innerHTML = output;
-        })
-        
-}
 
-getAllPosts();
+                const commentButtons = document.querySelectorAll('.commentBtn');
+                commentButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const parentDiv = this.closest('.post__main'); 
+                        const commentsDiv = parentDiv.querySelector('.commentsDiv'); 
+                        
+                        commentsDiv.classList.toggle('d-none');
+
+                         console.log('Comment button clicked!');
+                    });
+                });
+            }
+        )}
+
+
+
+    getAllPosts()
