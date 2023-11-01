@@ -1,7 +1,3 @@
-
-
-
-
 function getAllPosts() {
     fetch('https://dummyjson.com/posts')
         .then((res) => res.json())
