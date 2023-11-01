@@ -38,8 +38,8 @@ function getAllPosts() {
                         <p class="post__content">${post.body}</p>
                         <div class="post__tags">Tags: ${post.tags}</div>
                         <div class="post__reactions d-flex flex-row">
-                            <button type="button" class="btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
-                                <i class="bi bi-heart pe-1"></i><p class="fs-6 mb-0">${post.reactions}</p>
+                            <button type="button" class="heartBtn btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
+                                <i class="bi bi-heart pe-1"></i><p class="heartCount fs-6 mb-0">${post.reactions}</p>
                             </button>
                             <button type="button" class="commentBtn btn btn-outline-danger btn-sm d-flex flex-row align-items-center">
                                 <i class="bi bi-chat"></i>
@@ -66,6 +66,22 @@ function getAllPosts() {
                          console.log('Comment button clicked!');
                     });
                 });
+
+                const heartBtn = document.querySelectorAll('.heartBtn');
+                heartBtn.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const parentDiv = this.closest('.post__main'); 
+                        const heartCount = parentDiv.querySelector('.heartCount');
+
+                        let currentReactions = parseInt(heartCount.textContent, 10);
+                        currentReactions++;
+                        heartCount.textContent = currentReactions;
+            
+                    })
+                })
+
+
+
             }
         )}
 
