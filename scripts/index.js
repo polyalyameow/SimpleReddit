@@ -1,3 +1,6 @@
+
+
+
 function getAllPosts() {
     const storedData = localStorage.getItem('postsData');
     if (storedData) {
@@ -44,10 +47,10 @@ function getAllPosts() {
                         <div class="post__tags">Tags: ${post.tags}</div>
                         <div class="post__reactions d-flex flex-row justify-content-between align-items-center border" style="width: 8%">
                             
-                                <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="width: 2%; color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
+                                <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
                             
                            
-                                <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" style="width: 2%"></i><p class="heartCount m-0 p-1">${comments.length}</p>
+                                <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
                           
                         </div>
                         <div class="commentsDiv container d-none">
@@ -104,3 +107,23 @@ function getAllPosts() {
 
 
     getAllPosts()
+
+    
+let newPost = "";
+
+newPost += `
+<form style="width: 50%">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Enter title" required>
+    </div>
+    <div class="form-group">
+        <textarea type="text" class="form-control" placeholder="Enter text" rows="3" required></textarea>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Enter tags" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Publish</button>
+</div>
+</form>`;
+
+document.querySelector(".create-post").innerHTML = newPost;
