@@ -1,7 +1,10 @@
-
-
+let output = "";
+let newPostContent = "";
+let createdPost = "";
+let postsData = [];
 
 function getAllPosts() {
+    // localStorage.clear()
     const storedData = localStorage.getItem('postsData');
     if (storedData) {
         const postsWithComments = JSON.parse(storedData);
@@ -31,14 +34,19 @@ function getAllPosts() {
         .then((postsWithComments) => {
             console.log(postsWithComments);
             localStorage.setItem('postsData', JSON.stringify(postsWithComments));
+
             showPosts(postsWithComments)
         }
         )}
     }
 
             function showPosts(postsWithComments) {
-            let output = "";
+            
+
+
             for (const { post, comments } of postsWithComments) {
+                
+           
 
                 output += `
                     <div class="post__main border my-3 p-3">
@@ -63,6 +71,92 @@ function getAllPosts() {
 
             document.querySelector(".post").innerHTML = output;
 
+            newPostContent += `
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Enter title" id="newTitle" required>
+                </div>
+                <div class="form-group">
+                    <textarea type="text" class="form-control" placeholder="Enter text" id="newText" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Enter tags" id="newTags" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Publish</button>
+            </div>
+            </form>`;
+
+            document.querySelector(".create-post").innerHTML = newPostContent;
+            const notPublished = document.querySelector(".create-post")
+
+
+            notPublished.addEventListener('submit', function(event) {
+                event.preventDefault();
+            
+
+                const newTitle = document.getElementById('newTitle').value;
+                const newText = document.getElementById('newText').value;
+                const newTags = document.getElementById('newTags').value;
+                console.log(newTitle, newText, newTags)
+                
+                
+
+                const newPost = {
+                    post:{
+                    title: newTitle,
+                    body: newText,
+                    tags: [newTags],
+                    reactions: 0
+                },
+                    comments: []
+                };
+
+                const existingData = localStorage.getItem('postsData');
+                
+
+                if (existingData) {
+                    postsData = JSON.parse(existingData);
+                    
+                }
+            
+                postsData.unshift(newPost)
+                localStorage.setItem('postsData', JSON.stringify(postsData));
+                console.log(postsData);
+                console.log(newPost);
+                console.log(localStorage.postsData)
+
+                for (const { post, comments } of  postsData) {
+                    // console.log(post.title)
+                    // console.log(post.body)
+                    // console.log(post.tags)
+                    output="";
+                    createdPost += `
+                    <div class="post__main border my-3 p-3">
+                    <p class="post__title text-bg-primary p-3">${post.title}</p>
+                    <p class="post__content">${post.body}</p>
+                    <div class="post__tags">Tags: ${post.tags}</div>
+                    <div class="post__reactions d-flex flex-row justify-content-between align-items-center border" style="width: 8%">
+                        
+                            <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
+                        
+                       
+                            <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
+                      
+                    </div>
+                    <div class="commentsDiv container d-none">
+                        <ul  class="list-group">
+                            ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>`;
+                }
+                document.querySelector(".post").innerHTML = output;
+                document.querySelector(".created-post").innerHTML = createdPost;
+            
+        })
+            
+        
+
             // comments
 
                 const commentButtons = document.querySelectorAll('.commentBtn');
@@ -80,6 +174,9 @@ function getAllPosts() {
                 // likes
 
                 const heartBtn = document.querySelectorAll('.heartBtn');
+                let updatedStorage = localStorage.postsData;
+
+                
                 heartBtn.forEach(button => {
                     button.addEventListener('click', function() {
                         button.classList.toggle('bi-heart-fill')
@@ -91,8 +188,13 @@ function getAllPosts() {
 
                         if (button.classList.contains('bi-heart-fill')) {
                             currentReactions ++;
+                            console.log(updatedStorage);
+                            
+                            
+                            
                         } else {
                             currentReactions --;
+                            
                         }
 
                         heartCount.textContent = currentReactions;
@@ -100,30 +202,65 @@ function getAllPosts() {
                     })
                 })
 
+                
             }
 
 
-
+            
 
 
     getAllPosts()
 
     
-let newPost = "";
 
-newPost += `
-<form style="width: 50%">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Enter title" required>
-    </div>
-    <div class="form-group">
-        <textarea type="text" class="form-control" placeholder="Enter text" rows="3" required></textarea>
-    </div>
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Enter tags" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Publish</button>
-</div>
-</form>`;
 
-document.querySelector(".create-post").innerHTML = newPost;
+// newPostContent += `
+// <form>
+//     <div class="form-group">
+//         <input type="text" class="form-control" placeholder="Enter title" id="newTitle" required>
+//     </div>
+//     <div class="form-group">
+//         <textarea type="text" class="form-control" placeholder="Enter text" id="newText" rows="3" required></textarea>
+//     </div>
+//     <div class="form-group">
+//         <input type="text" class="form-control" placeholder="Enter tags" id="newTags" required>
+//     </div>
+//     <button type="submit" class="btn btn-primary">Publish</button>
+// </div>
+// </form>`;
+
+// document.querySelector(".create-post").innerHTML = newPostContent;
+// const notPublished = document.querySelector(".create-post")
+
+
+// notPublished.addEventListener('submit', function(event) {
+//     event.preventDefault();
+   
+
+//     const newTitle = document.getElementById('newTitle').value;
+//     const newText = document.getElementById('newText').value;
+//     const newTags = document.getElementById('newTags').value;
+//     console.log(newTitle, newText, newTags)
+    
+    
+
+//     const newPost = {
+//         title: newTitle,
+//         body: newText,
+//         tags: newTags
+//     };
+
+//     const existingData = localStorage.getItem('postsData');
+//     let postsData = [];
+
+//     if (existingData) {
+//         postsData = JSON.parse(existingData);
+        
+//     }
+  
+//     postsData.push(newPost)
+//     localStorage.setItem('postsData', JSON.stringify(postsData));
+//     console.log(postsData);
+//     console.log(localStorage.postsData)
+   
+// })
