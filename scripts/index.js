@@ -49,11 +49,11 @@ function getAllPosts() {
            
 
                 output += `
-                    <div class="post__main border my-3 p-3">
-                        <p class="post__title text-bg-primary p-3">${post.title}</p>
+                    <div class="post__main border rounded my-3 p-3">
+                        <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
                         <p class="post__content">${post.body}</p>
-                        <div class="post__tags">Tags: ${post.tags}</div>
-                        <div class="post__reactions d-flex flex-row justify-content-between align-items-center border" style="width: 8%">
+                        <div class="post__tags text-info">Tags: ${post.tags}</div>
+                        <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
                             
                                 <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
                             
@@ -61,9 +61,9 @@ function getAllPosts() {
                                 <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
                           
                         </div>
-                        <div class="commentsDiv container d-none">
+                        <div class="commentsDiv container d-none w-100">
                             <ul  class="list-group">
-                                ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
+                                ${comments.map(comment => `<li class="list-group-item mt-2">${comment.body}</li>`).join('')}
                             </ul>
                         </div>
                     </div>`;
@@ -74,15 +74,15 @@ function getAllPosts() {
             newPostContent += `
             <form>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Enter title" id="newTitle" required>
+                    <input type="text" class="form-control m-1" placeholder="Enter title" id="newTitle" required>
                 </div>
                 <div class="form-group">
-                    <textarea type="text" class="form-control" placeholder="Enter text" id="newText" rows="3" required></textarea>
+                    <textarea type="text" class="form-control m-1" placeholder="Enter text" id="newText" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Enter tags" id="newTags" required>
+                    <input type="text" class="form-control m-1" placeholder="Enter tags" id="newTags" required>
                 </div>
-                <button type="submit" class="btn btn-primary">Publish</button>
+                <button type="submit" class="btn btn-primary m-1">Publish</button>
             </div>
             </form>`;
 
@@ -213,54 +213,6 @@ function getAllPosts() {
 
     
 
-
-// newPostContent += `
-// <form>
-//     <div class="form-group">
-//         <input type="text" class="form-control" placeholder="Enter title" id="newTitle" required>
-//     </div>
-//     <div class="form-group">
-//         <textarea type="text" class="form-control" placeholder="Enter text" id="newText" rows="3" required></textarea>
-//     </div>
-//     <div class="form-group">
-//         <input type="text" class="form-control" placeholder="Enter tags" id="newTags" required>
-//     </div>
-//     <button type="submit" class="btn btn-primary">Publish</button>
-// </div>
-// </form>`;
-
-// document.querySelector(".create-post").innerHTML = newPostContent;
-// const notPublished = document.querySelector(".create-post")
-
-
-// notPublished.addEventListener('submit', function(event) {
-//     event.preventDefault();
-   
-
-//     const newTitle = document.getElementById('newTitle').value;
-//     const newText = document.getElementById('newText').value;
-//     const newTags = document.getElementById('newTags').value;
-//     console.log(newTitle, newText, newTags)
-    
-    
-
-//     const newPost = {
-//         title: newTitle,
-//         body: newText,
-//         tags: newTags
-//     };
-
-//     const existingData = localStorage.getItem('postsData');
-//     let postsData = [];
-
-//     if (existingData) {
-//         postsData = JSON.parse(existingData);
-        
-//     }
-  
-//     postsData.push(newPost)
-//     localStorage.setItem('postsData', JSON.stringify(postsData));
-//     console.log(postsData);
-//     console.log(localStorage.postsData)
-   
-// })
+// TODO
+// comma in tags if there's more than one tag
+// BUG: impos to like or check comments after publishing a new post
