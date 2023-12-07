@@ -65,6 +65,10 @@ function getAllPosts() {
                             <ul  class="list-group">
                                 ${comments.map(comment => `<li class="list-group-item mt-2">${comment.body}</li>`).join('')}
                             </ul>
+                            <div class="comments">
+                                <textarea class="form-control m-1" placeholder="Enter your comment" rows="2" required></textarea>
+                                <button type="button" class="btn btn-primary m-1 addComment">Add Comment</button>
+                            </div>
                         </div>
                     </div>`;
             }
@@ -194,7 +198,12 @@ function getAllPosts() {
                         <ul  class="list-group">
                             ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
                         </ul>
+                        <div class="comments">
+                        <textarea class="form-control m-1" placeholder="Enter your comment" rows="2" required></textarea>
+                        <button type="button" class="btn btn-primary m-1 addComment">Add Comment</button>
                     </div>
+                    </div>
+                    
                 </div>`;
                 }
                 document.querySelector(".post").innerHTML = output;  
