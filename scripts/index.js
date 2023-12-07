@@ -52,7 +52,7 @@ function getAllPosts() {
                     <div class="post__main border rounded my-3 p-3">
                         <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
                         <p class="post__content">${post.body}</p>
-                        <div class="post__tags text-info">Tags: ${post.tags}</div>
+                        <div class="post__tags">Tags: <span class="text-warning"> ${post.tags.join(" ")} </span></div>
                         <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
                             
                                 <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
@@ -130,12 +130,12 @@ function getAllPosts() {
                     // console.log(post.title)
                     // console.log(post.body)
                     // console.log(post.tags)
-                    output="";
+                    // output="";
                     createdPost += `
                     <div class="post__main border rounded my-3 p-3">
                     <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
                     <p class="post__content">${post.body}</p>
-                    <div class="post__tags text-info">Tags: ${post.tags}</div>
+                    <div class="post__tags text-info">Tags: <span class="text-warning"> ${post.tags.join(" ")} </span></div>
                     <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
                         
                             <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
@@ -160,7 +160,7 @@ function getAllPosts() {
             
         })
             
-        
+        let updatedStorage = localStorage.postsData;
 
             // comments
 
@@ -179,7 +179,7 @@ function getAllPosts() {
                 // likes
 
                 const heartBtn = document.querySelectorAll('.heartBtn');
-                let updatedStorage = localStorage.postsData;
+                
 
                 
                 heartBtn.forEach(button => {
@@ -219,5 +219,7 @@ function getAllPosts() {
     
 
 // TODO
-// comma in tags if there's more than one tag
+// ? make tags in different color?
 // BUG: impos to like or check comments after publishing a new post
+// add input for new comments
+// if com = 0, user can add own commwnts
