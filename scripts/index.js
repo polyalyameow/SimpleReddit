@@ -124,6 +124,7 @@ function getAllPosts() {
                 console.log(postsData);
                 console.log(newPost);
                 console.log(localStorage.postsData)
+                
 
                 for (const { post, comments } of  postsData) {
                     // console.log(post.title)
@@ -131,14 +132,13 @@ function getAllPosts() {
                     // console.log(post.tags)
                     output="";
                     createdPost += `
-                    <div class="post__main border my-3 p-3">
-                    <p class="post__title text-bg-primary p-3">${post.title}</p>
+                    <div class="post__main border rounded my-3 p-3">
+                    <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
                     <p class="post__content">${post.body}</p>
-                    <div class="post__tags">Tags: ${post.tags}</div>
-                    <div class="post__reactions d-flex flex-row justify-content-between align-items-center border" style="width: 8%">
+                    <div class="post__tags text-info">Tags: ${post.tags}</div>
+                    <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
                         
                             <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
-                        
                        
                             <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
                       
@@ -152,6 +152,11 @@ function getAllPosts() {
                 }
                 document.querySelector(".post").innerHTML = output;
                 document.querySelector(".created-post").innerHTML = createdPost;
+                document.getElementById('newTitle').value = "";
+                document.getElementById('newText').value = "";
+                document.getElementById('newTags').value = "";
+                
+
             
         })
             
