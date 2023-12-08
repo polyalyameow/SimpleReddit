@@ -77,13 +77,15 @@ function getAllPosts() {
             document.querySelector(".post").innerHTML = output;
 
             // add comments
-                
+            document.addEventListener('DOMContentLoaded', function() {
             const addComment = document.querySelectorAll('.addComment');
 
 
             addComment.forEach((button, index) => {
                 
                 const commentContentInput = button.parentElement.querySelector('#commentContent');
+                const parentDiv = button.closest('.post__main');
+                const commentCount = parentDiv.querySelector('.commentCount');
                 const postId = postsWithComments[index].post.id;
 
                 commentContentInput.addEventListener('input', function() {
@@ -122,10 +124,11 @@ function getAllPosts() {
             });
 
             localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+            commentCount.textContent = updatedPosts[index].comments.length;
         }
                 });
             });
-
+        })
              // comments
 
              const commentButtons = document.querySelectorAll('.commentBtn');
