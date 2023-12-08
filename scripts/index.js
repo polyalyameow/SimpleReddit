@@ -59,7 +59,8 @@ function getAllPosts() {
                                 <p class="heartCount m-0 p-1">${post.reactions}</p>
                             
                            
-                                <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
+                                <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i>
+                                <p class="commentCount m-0 p-1">${comments.length}</p>
                           
                         </div>
                         <div class="commentsDiv container d-none w-100">
@@ -77,7 +78,7 @@ function getAllPosts() {
             document.querySelector(".post").innerHTML = output;
 
             // add comments
-            document.addEventListener('DOMContentLoaded', function() {
+          
             const addComment = document.querySelectorAll('.addComment');
 
 
@@ -108,8 +109,10 @@ function getAllPosts() {
                      commentList.appendChild(newComment);
 
                      button.disabled = true;
+                     
 
                      commentContentInput.value = "";
+                     
                      const storedData = localStorage.getItem('postsData');
                     if (storedData) {
                     const postsWithComments = JSON.parse(storedData);
@@ -121,6 +124,7 @@ function getAllPosts() {
                             };
                         }
                 return item;
+                
             });
 
             localStorage.setItem('postsData', JSON.stringify(updatedPosts));
@@ -128,7 +132,7 @@ function getAllPosts() {
         }
                 });
             });
-        })
+        
              // comments
 
              const commentButtons = document.querySelectorAll('.commentBtn');
