@@ -67,7 +67,7 @@ function getAllPosts() {
                                 ${comments.map(comment => `<li class="list-group-item mt-2">${comment.body}</li>`).join('')}
                             </ul>
                             <form class="comments">
-                                <textarea class="form-control m-1" id="commentContent" placeholder="Enter your comment" rows="2" required></textarea>
+                                <textarea class="form-control m-1" id="commentContent" data-post-id="${post.id}" placeholder="Enter your comment" rows="2" required></textarea>
                                 <button type="submit" class="btn btn-primary m-1 addComment" disabled>Add Comment</button>
                             </form>
                         </div>
@@ -84,7 +84,7 @@ function getAllPosts() {
             addComment.forEach((button, index) => {
                 
                 const commentContentInput = button.parentElement.querySelector('#commentContent');
-               
+                const postId = postsWithComments[index].post.id;
 
                 commentContentInput.addEventListener('input', function() {
                     button.disabled = !commentContentInput.value.trim();
@@ -105,22 +105,24 @@ function getAllPosts() {
                      newComment.textContent = commentContent;
                      commentList.appendChild(newComment);
 
-                    // const updatedPostsWithComments =  postsWithComments.map(item => {
-                    //     if (item.post.id === postId) {
-                    //         return {
-                    //             ...item,
-                    //             comments: [...item.comments, { body: commentContent }]
-                    //         };
-                    //     }
-                    //     return item;
-                    // });
-                    
-                    // localStorage.setItem('postsData', JSON.stringify(updatedPostsWithComments));
-                    // console.log(updatedPostsWithComments)
                      button.disabled = true;
 
                      commentContentInput.value = "";
-                    
+                     const storedData = localStorage.getItem('postsData');
+                    if (storedData) {
+                    const postsWithComments = JSON.parse(storedData);
+                    const updatedPosts = postsWithComments.map(item => {
+                        if (item.post.id === postId) {
+                            return {
+                                ...item,
+                                comments: [...item.comments, { body: commentContent }]
+                            };
+                        }
+                return item;
+            });
+
+            localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+        }
                 });
             });
 
@@ -365,7 +367,3 @@ function getAllPosts() {
 
     
 
-// TODO
-// ? make tags in different color?
-// add input for new comments
-// if com = 0, user can add own commwnts
