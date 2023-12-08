@@ -67,7 +67,7 @@ function getAllPosts() {
                             </ul>
                             <form class="comments">
                                 <textarea class="form-control m-1" id="commentContent" placeholder="Enter your comment" rows="2" required></textarea>
-                                <button type="submit" class="btn btn-primary m-1 addComment">Add Comment</button>
+                                <button type="submit" class="btn btn-primary m-1 addComment" disabled>Add Comment</button>
                             </form>
                         </div>
                     </div>`;
@@ -79,14 +79,19 @@ function getAllPosts() {
                 
             const addComment = document.querySelectorAll('.addComment');
 
-  
-
 
             addComment.forEach(button => {
+                const commentContentInput = button.parentElement.querySelector('#commentContent');
+                commentContentInput.addEventListener('input', function() {
+                    button.disabled = !commentContentInput.value.trim();
+                });
+
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
                     
-                    const commentContent = document.getElementById('commentContent').value;
+                    const commentContent = commentContentInput.value;
+  
+
 
                      console.log('Add comment');
                      console.log(commentContent)
@@ -98,7 +103,9 @@ function getAllPosts() {
                      newComment.textContent = commentContent;
                      commentList.appendChild(newComment);
 
-                    document.getElementById('commentContent').value = "";
+                     button.disabled = true;
+
+                     commentContentInput.value = "";
 
                 });
             });
