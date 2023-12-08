@@ -65,15 +65,43 @@ function getAllPosts() {
                             <ul  class="list-group">
                                 ${comments.map(comment => `<li class="list-group-item mt-2">${comment.body}</li>`).join('')}
                             </ul>
-                            <div class="comments">
-                                <textarea class="form-control m-1" placeholder="Enter your comment" rows="2" required></textarea>
-                                <button type="button" class="btn btn-primary m-1 addComment">Add Comment</button>
-                            </div>
+                            <form class="comments">
+                                <textarea class="form-control m-1" id="commentContent" placeholder="Enter your comment" rows="2" required></textarea>
+                                <button type="submit" class="btn btn-primary m-1 addComment">Add Comment</button>
+                            </form>
                         </div>
                     </div>`;
             }
 
             document.querySelector(".post").innerHTML = output;
+
+            // add comments
+                
+            const addComment = document.querySelectorAll('.addComment');
+
+  
+
+
+            addComment.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    
+                    const commentContent = document.getElementById('commentContent').value;
+
+                     console.log('Add comment');
+                     console.log(commentContent)
+
+                     const parentDiv = this.closest('.post__main'); 
+                     const commentList = parentDiv.querySelector('.list-group');
+                     const newComment = document.createElement('li');
+                     newComment.className = 'list-group-item mt-2';
+                     newComment.textContent = commentContent;
+                     commentList.appendChild(newComment);
+
+                    document.getElementById('commentContent').value = "";
+
+                });
+            });
 
              // comments
 
@@ -120,7 +148,7 @@ function getAllPosts() {
                  })
              })
 
-
+            // FORM TO ADD NEW POST
 
             newPostContent += `
             <form>
@@ -176,6 +204,7 @@ function getAllPosts() {
                 console.log(newPost);
                 console.log(localStorage.postsData)
                 
+                // ALL POSTS INCL NEWLY PUBLISHED
 
                 for (const { post, comments } of  postsData) {
                     // console.log(post.title)
@@ -199,9 +228,9 @@ function getAllPosts() {
                             ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
                         </ul>
                         <div class="comments">
-                        <textarea class="form-control m-1" placeholder="Enter your comment" rows="2" required></textarea>
-                        <button type="button" class="btn btn-primary m-1 addComment">Add Comment</button>
-                    </div>
+                                <textarea class="form-control m-1" id="commentContent" placeholder="Enter your comment" rows="2" required></textarea>
+                                <button type="submit" class="btn btn-primary m-1 addComment" disabled>Add Comment</button>
+                        </div>
                     </div>
                     
                 </div>`;
@@ -212,6 +241,31 @@ function getAllPosts() {
                 document.getElementById('newTitle').value = "";
                 document.getElementById('newText').value = "";
                 document.getElementById('newTags').value = "";
+
+                // add comments
+                
+                const addComment = document.querySelectorAll('.addComment');
+
+                addComment.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const commentContent = document.getElementById('commentContent').value;
+                    
+
+                     console.log('Add comment');
+                     console.log(commentContent)
+
+                     const parentDiv = this.closest('.post__main'); 
+                     const commentList = parentDiv.querySelector('.list-group');
+                     const newComment = document.createElement('li');
+                     newComment.className = 'list-group-item mt-2';
+                     newComment.textContent = commentContent;
+                     commentList.appendChild(newComment);
+
+                    document.getElementById('commentContent').value = "";
+
+                });
+            });
                 
                 // comments
 
