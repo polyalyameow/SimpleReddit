@@ -257,30 +257,32 @@ function getAllPosts() {
                     // console.log(post.title)
                     // console.log(post.body)
                     // console.log(post.tags)
-
+                    
                     createdPost += `
                     <div class="post__main border rounded my-3 p-3">
-                    <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
-                    <p class="post__content">${post.body}</p>
-                    <div class="post__tags">Tags: <span class="text-warning"> ${post.tags.join(" ")} </span></div>
-                    <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
-                        
-                            <i class="heartBtn bi bi-heart d-flex flex-row justify-content-between align-items-center" style="color: red"></i><p class="heartCount m-0 p-1">${post.reactions}</p>
-                       
-                            <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i><p class="heartCount m-0 p-1">${comments.length}</p>
-                      
-                    </div>
-                    <div class="commentsDiv container d-none">
-                        <ul  class="list-group">
-                            ${comments.map(comment => `<li class="list-group-item">${comment.body}</li>`).join('')}
-                        </ul>
-                        <div class="comments">
-                                <textarea class="form-control m-1" id="commentContent" placeholder="Enter your comment" rows="2" required></textarea>
-                                <button type="submit" class="btn btn-primary m-1 addComment" disabled>Add Comment</button>
+                        <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
+                        <p class="post__content">${post.body}</p>
+                        <div class="post__tags">Tags: <span class="text-warning"> ${post.tags.join(" ")} </span></div>
+                        <div class="post__reactions d-flex flex-row justify-content-between align-items-center mt-1" style="width: 8%">
+                            
+                                <i class="heartBtn bi ${post.isLiked ? 'bi-heart-fill' : 'bi-heart'} d-flex flex-row justify-content-between align-items-center" style="color: red"></i>
+                                <p class="heartCount m-0 p-1">${post.reactions}</p>
+                            
+                           
+                                <i class="commentBtn bi bi-chat d-flex flex-row justify-content-between align-items-center" ></i>
+                                <p class="commentCount m-0 p-1">${comments.length}</p>
+                          
                         </div>
-                    </div>
-                    
-                </div>`;
+                        <div class="commentsDiv container d-none w-100">
+                            <ul  class="list-group">
+                                ${comments.map(comment => `<li class="list-group-item mt-2">${comment.body}</li>`).join('')}
+                            </ul>
+                            <form class="comments">
+                                <textarea class="form-control m-1" id="commentContent" data-post-id="${post.id}" placeholder="Enter your comment" rows="2" required></textarea>
+                                <button type="submit" class="btn btn-primary m-1 addComment" disabled>Add Comment</button>
+                            </form>
+                        </div>
+                    </div>`;
                 }
                 document.querySelector(".post").innerHTML = output;  
                 document.querySelector(".created-post").innerHTML = createdPost;
@@ -293,28 +295,56 @@ function getAllPosts() {
                 
                 const addComment = document.querySelectorAll('.addComment');
 
-                addComment.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const commentContent = document.getElementById('commentContent').value;
+
+                addComment.forEach((button, index) => {
                     
+                    const commentContentInput = button.parentElement.querySelector('#commentContent');
+                    const parentDiv = button.closest('.post__main');
+    
+                    commentContentInput.addEventListener('input', function() {
+                        button.disabled = !commentContentInput.value.trim();
+                    });
 
-                     console.log('Add comment');
-                     console.log(commentContent)
+                    button.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        
+                        const commentContent = commentContentInput.value;
+     
+                         console.log('Add comment');
+                         console.log(commentContent)
+    
+                         const parentDiv = this.closest('.post__main'); 
+                         const commentList = parentDiv.querySelector('.list-group');
+                         const newComment = document.createElement('li');
+                         newComment.className = 'list-group-item mt-2';
+                         newComment.textContent = commentContent;
+                         commentList.appendChild(newComment);
+    
+                         button.disabled = true;
+                         
+    
+                         commentContentInput.value = "";
+                         
+                //          const storedData = localStorage.getItem('postsData');
+                //         if (storedData) {
+                //         const postsWithComments = JSON.parse(storedData);
+                //         const updatedPosts = postsWithComments.map(item => {
+                //             if (item.post.id === postId) {
+                //                 return {
+                //                     ...item,
+                //                     comments: [...item.comments, { body: commentContent }]
+                //                 };
+                //             }
+                //     return item;
+                    
+                // });
+            // }
+        })
+    })
 
-                     const parentDiv = this.closest('.post__main'); 
-                     const commentList = parentDiv.querySelector('.list-group');
-                     const newComment = document.createElement('li');
-                     newComment.className = 'list-group-item mt-2';
-                     newComment.textContent = commentContent;
-                     commentList.appendChild(newComment);
-
-                    document.getElementById('commentContent').value = "";
-
-                });
-            });
+               
                 
-                // comments
+             // comments
 
              const commentButtons = document.querySelectorAll('.commentBtn');
              commentButtons.forEach(button => {
@@ -328,13 +358,15 @@ function getAllPosts() {
                  });
              });
 
+
              // likes
 
              const heartBtn = document.querySelectorAll('.heartBtn');
              
 
              
-             heartBtn.forEach(button => {
+             heartBtn.forEach((button, index) => {
+                const postId = postsWithComments[index].post.id;
                  button.addEventListener('click', function() {
                      button.classList.toggle('bi-heart-fill')
                      button.classList.toggle('bi-heart')
@@ -345,19 +377,36 @@ function getAllPosts() {
 
                      if (button.classList.contains('bi-heart-fill')) {
                          currentReactions ++;
-                         console.log(updatedStorage);
-                         
-                         
-                         
                      } else {
                          currentReactions --;
-                         
                      }
+
+                    const storedData = localStorage.getItem('postsData');
+                    if (storedData) {
+                        const postsWithLikes = JSON.parse(storedData);
+                        const updatedPosts = postsWithLikes.map(item => {
+                            if (item.post.id === postId) {
+                                return {
+                                    ...item,
+                                    post: {
+                                        ...item.post,
+                                        reactions: currentReactions,
+                                        isLiked: button.classList.contains('bi-heart-fill')
+                                    }
+                                };
+                            }
+                            return item;
+                        });
+        
+                        localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+                    }
+
 
                      heartCount.textContent = currentReactions;
          
                  })
              })
+
             
         })
             
