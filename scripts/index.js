@@ -225,21 +225,14 @@ function getAllPosts() {
                 const newTags = document.getElementById('newTags').value;
                 console.log(newTitle, newText, newTags)
                 
-                function generateUniqueID() {
-                    const existingIDs = postsData.map(item => item.post.id);
-                    let newID = 30;
                 
-                    while (existingIDs.includes(newID)) {
-                        newID++;
-                    }
-                
-                    return newID;
+                function generateRandomID() {
+                    return Math.floor(Math.random() * 10000);
                 }
-                
 
                 const newPost = {
                     post:{
-                    id: generateUniqueID(),
+                    id:  generateRandomID(),
                     title: newTitle,
                     body: newText,
                     tags: [newTags],
@@ -258,14 +251,16 @@ function getAllPosts() {
             
                 postsData.unshift(newPost)
                 localStorage.setItem('postsData', JSON.stringify(postsData));
+                // newlyPublished()
                 console.log(postsData);
                 console.log(newPost);
                 console.log(localStorage.postsData)
                 
                 // ALL POSTS INCL NEWLY PUBLISHED
 
-
+               function newlyPublished() {
                 for (const { post, comments } of  postsData) {
+                    
                     // console.log(post.title)
                     // console.log(post.body)
                     // console.log(post.tags)
@@ -298,6 +293,10 @@ function getAllPosts() {
                 }}
                 document.querySelector(".post").innerHTML = output;  
                 document.querySelector(".created-post").innerHTML = createdPost;
+            }
+
+            newlyPublished();
+
 
                 document.getElementById('newTitle').value = "";
                 document.getElementById('newText').value = "";
