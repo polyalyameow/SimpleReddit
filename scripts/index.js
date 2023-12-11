@@ -225,10 +225,21 @@ function getAllPosts() {
                 const newTags = document.getElementById('newTags').value;
                 console.log(newTitle, newText, newTags)
                 
+                function generateUniqueID() {
+                    const existingIDs = postsData.map(item => item.post.id);
+                    let newID = 30;
+                
+                    while (existingIDs.includes(newID)) {
+                        newID++;
+                    }
+                
+                    return newID;
+                }
                 
 
                 const newPost = {
                     post:{
+                    id: generateUniqueID(),
                     title: newTitle,
                     body: newText,
                     tags: [newTags],
@@ -253,11 +264,12 @@ function getAllPosts() {
                 
                 // ALL POSTS INCL NEWLY PUBLISHED
 
+
                 for (const { post, comments } of  postsData) {
                     // console.log(post.title)
                     // console.log(post.body)
                     // console.log(post.tags)
-                    
+                    if(post) {
                     createdPost += `
                     <div class="post__main border rounded my-3 p-3">
                         <h3 class="post__title text-bg-primary p-3 border rounded">${post.title}</h3>
@@ -283,7 +295,7 @@ function getAllPosts() {
                             </form>
                         </div>
                     </div>`;
-                }
+                }}
                 document.querySelector(".post").innerHTML = output;  
                 document.querySelector(".created-post").innerHTML = createdPost;
 
@@ -294,12 +306,16 @@ function getAllPosts() {
                 // add comments
                 
                 const addComment = document.querySelectorAll('.addComment');
-
+               
 
                 addComment.forEach((button, index) => {
-                    
+                    // const postId = postsData[index];
+                    // console.log(postsData[index].post.id)
+                    // console.log(updatedPosts)
                     const commentContentInput = button.parentElement.querySelector('#commentContent');
                     const parentDiv = button.closest('.post__main');
+                    const commentCount = parentDiv.querySelector('.commentCount');
+                    const postId =  postsData[index]?.post?.id;
     
                     commentContentInput.addEventListener('input', function() {
                         button.disabled = !commentContentInput.value.trim();
@@ -321,26 +337,28 @@ function getAllPosts() {
                          commentList.appendChild(newComment);
     
                          button.disabled = true;
-                         
-    
+                        
                          commentContentInput.value = "";
-                         
-                //          const storedData = localStorage.getItem('postsData');
-                //         if (storedData) {
-                //         const postsWithComments = JSON.parse(storedData);
-                //         const updatedPosts = postsWithComments.map(item => {
-                //             if (item.post.id === postId) {
-                //                 return {
-                //                     ...item,
-                //                     comments: [...item.comments, { body: commentContent }]
-                //                 };
-                //             }
-                //     return item;
-                    
-                // });
-            // }
+                         console.log(postsData)
+
+                         const storedData = localStorage.getItem('postsData');
+                         if (storedData) {
+                         const postsWithComments = JSON.parse(storedData);
+                         const updatedPosts = postsWithComments.map(item => {
+                             if (item.post && item.post.id === postId) {
+                                item.comments.push({ body: commentContent });
+                             }
+                     return item;
+                     
+                 });
+     
+                 localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+                 commentCount.textContent = updatedPosts.find(item => item.post.id === postId)?.comments?.length || 0;
+             }
+                     })
+
         })
-    })
+    
 
                
                 
@@ -358,6 +376,7 @@ function getAllPosts() {
                  });
              });
 
+            
 
              // likes
 
@@ -366,7 +385,7 @@ function getAllPosts() {
 
              
              heartBtn.forEach((button, index) => {
-                const postId = postsWithComments[index].post.id;
+                const postId = postsData[index].post.id;
                  button.addEventListener('click', function() {
                      button.classList.toggle('bi-heart-fill')
                      button.classList.toggle('bi-heart')
@@ -410,7 +429,7 @@ function getAllPosts() {
             
         })
             
-        let updatedStorage = localStorage.postsData;
+        let updatedStorage = JSON.parse(localStorage.postsData);
 
 
 }
