@@ -64,8 +64,50 @@ function renderNewPostForm() {
     document.querySelector(".create-post").innerHTML = newPostContent;
 }
 
+// CREATING NEW POST AND SAVING THE RESULTS
+const notPublished = document.querySelector(".create-post");
+    notPublished.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const newTitle = document.getElementById('newTitle').value;
+        const newText = document.getElementById('newText').value;
+        const newTags = document.getElementById('newTags').value;
+        console.log(newTitle, newText, newTags)
+        
+        
+        function generateRandomID() {
+            return Math.floor(Math.random() * 10000);
+        }
 
+        const newPost = {
+            post:{
+            id:  generateRandomID(),
+            title: newTitle,
+            body: newText,
+            tags: [newTags],
+            reactions: 0
+        },
+            comments: []
+        };
 
+        const existingData = localStorage.getItem('postsData');
+        
+
+        if (existingData) {
+            postsData = JSON.parse(existingData);
+            
+        }
+
+        postsData.unshift(newPost)
+        localStorage.setItem('postsData', JSON.stringify(postsData));
+
+        newlyPublished(); 
+        document.getElementById('newTitle').value = "";
+        document.getElementById('newText').value = "";
+        document.getElementById('newTags').value = "";
+
+});
+
+// FETCHED POSTS
 function showPosts(postsData) {
     output = "";
     for (const { post, comments } of postsData) {
@@ -99,48 +141,8 @@ function showPosts(postsData) {
     attachEventListeners();
 }
 
-const notPublished = document.querySelector(".create-post");
-notPublished.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const newTitle = document.getElementById('newTitle').value;
-    const newText = document.getElementById('newText').value;
-    const newTags = document.getElementById('newTags').value;
-    console.log(newTitle, newText, newTags)
-    
-    
-    function generateRandomID() {
-        return Math.floor(Math.random() * 10000);
-    }
 
-    const newPost = {
-        post:{
-        id:  generateRandomID(),
-        title: newTitle,
-        body: newText,
-        tags: [newTags],
-        reactions: 0
-    },
-        comments: []
-    };
-
-    const existingData = localStorage.getItem('postsData');
-    
-
-    if (existingData) {
-        postsData = JSON.parse(existingData);
-        
-    }
-
-    postsData.unshift(newPost)
-    localStorage.setItem('postsData', JSON.stringify(postsData));
-
-    newlyPublished(); 
-    document.getElementById('newTitle').value = "";
-    document.getElementById('newText').value = "";
-    document.getElementById('newTags').value = "";
-
-});
-
+// LIKES, COMMENTS
 function attachEventListeners() {
     addComment = document.querySelectorAll('.addComment');
     commentButtons = document.querySelectorAll('.commentBtn');
@@ -210,9 +212,10 @@ function attachEventListeners() {
         commentsDiv.classList.toggle('d-none');
 
         console.log('Comment button clicked!');
-    });
+        });
     });
     }
+
     // likes
 
     if (heartBtn) {
@@ -255,14 +258,14 @@ function attachEventListeners() {
 
         heartCount.textContent = currentReactions;
 
-    
-    })
+        })
     })
 
 }
 
 }   
 
+// ALL POSTS INCL NEW POSTS
 
     function newlyPublished() {
         output = "";
@@ -301,30 +304,6 @@ function attachEventListeners() {
         }}
         document.querySelector(".post").innerHTML = output;  
         document.querySelector(".created-post").innerHTML = createdPost;
-
-
-        // function generateRandomID() {
-        //     return Math.floor(Math.random() * 10000);
-        // }
-        
-        // const newPost = {
-        //     post:{
-        //     id:  generateRandomID(),
-        //     title: newTitle,
-        //     body: newText,
-        //     tags: [newTags],
-        //     reactions: 0
-        // },
-        //     comments: []
-        // };
-    
-        
-        // postsData.unshift(newPost)
-        // localStorage.setItem('postsData', JSON.stringify(postsData));
-        
-        // addComment = document.querySelectorAll('.addComment');
-        // commentButtons = document.querySelectorAll('.commentBtn');
-        // heartBtn = document.querySelectorAll('.heartBtn');
     
         showPosts(postsData);
         // attachEventListeners();
@@ -332,15 +311,6 @@ function attachEventListeners() {
     }
 
 
-      
-
- 
-
-        
-
-
-
-            
 
     
     renderNewPostForm();
