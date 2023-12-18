@@ -11,7 +11,7 @@ function getAllPosts() {
     const storedData = localStorage.getItem('postsData');
     if (storedData) {
         postsData = JSON.parse(storedData);
-        showPosts(postsData);
+        showPosts(postsData); // data from localStorage
     } else {
         fetch('https://dummyjson.com/posts')
             .then((res) => res.json())
@@ -38,7 +38,7 @@ function getAllPosts() {
                 console.log(postsWithComments);
                 localStorage.setItem('postsData', JSON.stringify(postsWithComments));
     
-                showPosts(postsWithComments);
+                showPosts(postsWithComments); // fetched data
                 // attachEventListeners();
             }
             )}
