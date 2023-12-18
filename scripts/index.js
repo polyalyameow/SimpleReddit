@@ -7,24 +7,6 @@ let addComment;
 let commentButtons;
 let heartBtn;
 
-function renderNewPostForm() {
-    newPostContent = `
-    <form>
-        <div class="form-group">
-            <input type="text" class="form-control m-1" placeholder="Enter title" id="newTitle" required>
-        </div>
-        <div class="form-group">
-            <textarea type="text" class="form-control m-1" placeholder="Enter text" id="newText" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control m-1" placeholder="Enter tags" id="newTags" required>
-        </div>
-        <button type="submit" class="btn btn-primary m-1">Publish</button>
-        </div>
-    </form>`;
-    document.querySelector(".create-post").innerHTML = newPostContent;
-}
-
 function getAllPosts() {
     const storedData = localStorage.getItem('postsData');
     if (storedData) {
@@ -61,6 +43,28 @@ function getAllPosts() {
             }
             )}
 }
+
+// FORM TO CREATE NEW POSTS
+
+function renderNewPostForm() {
+    newPostContent = `
+    <form>
+        <div class="form-group">
+            <input type="text" class="form-control m-1" placeholder="Enter title" id="newTitle" required>
+        </div>
+        <div class="form-group">
+            <textarea type="text" class="form-control m-1" placeholder="Enter text" id="newText" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control m-1" placeholder="Enter tags" id="newTags" required>
+        </div>
+        <button type="submit" class="btn btn-primary m-1">Publish</button>
+        </div>
+    </form>`;
+    document.querySelector(".create-post").innerHTML = newPostContent;
+}
+
+
 
 function showPosts(postsData) {
     output = "";
@@ -195,65 +199,65 @@ function attachEventListeners() {
 })
     }
 
-//comments
+    //comments
 
-if (commentButtons) {
-commentButtons.forEach(button => {
-button.addEventListener('click', function() {
-    const parentDiv = this.closest('.post__main'); 
-    const commentsDiv = parentDiv.querySelector('.commentsDiv'); 
-    
-    commentsDiv.classList.toggle('d-none');
+    if (commentButtons) {
+    commentButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const parentDiv = this.closest('.post__main'); 
+        const commentsDiv = parentDiv.querySelector('.commentsDiv'); 
+        
+        commentsDiv.classList.toggle('d-none');
 
-     console.log('Comment button clicked!');
-});
-});
-}
-// likes
-
-if (heartBtn) {
-heartBtn.forEach((button, index) => {
-    const postId =  postsData[index]?.post?.id;
- button.addEventListener('click', function() {
-     button.classList.toggle('bi-heart-fill')
-     button.classList.toggle('bi-heart')
-     const parentDiv = this.closest('.post__main'); 
-     const heartCount = parentDiv.querySelector('.heartCount');
-
-     let currentReactions = parseInt(heartCount.textContent, 10);
-
-     if (button.classList.contains('bi-heart-fill')) {
-         currentReactions ++;
-     } else {
-         currentReactions --;
-     }
-
-    const storedData = localStorage.getItem('postsData');
-    if (storedData) {
-        const postsWithLikes = JSON.parse(storedData);
-        const updatedPosts = postsWithLikes.map(item => {
-            if (item.post.id === postId) {
-                return {
-                    ...item,
-                    post: {
-                        ...item.post,
-                        reactions: currentReactions,
-                        isLiked: button.classList.contains('bi-heart-fill')
-                    }
-                };
-            }
-            return item;
-        });
-
-        localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+        console.log('Comment button clicked!');
+    });
+    });
     }
+    // likes
+
+    if (heartBtn) {
+    heartBtn.forEach((button, index) => {
+        const postId =  postsData[index]?.post?.id;
+    button.addEventListener('click', function() {
+        button.classList.toggle('bi-heart-fill')
+        button.classList.toggle('bi-heart')
+        const parentDiv = this.closest('.post__main'); 
+        const heartCount = parentDiv.querySelector('.heartCount');
+
+        let currentReactions = parseInt(heartCount.textContent, 10);
+
+        if (button.classList.contains('bi-heart-fill')) {
+            currentReactions ++;
+        } else {
+            currentReactions --;
+        }
+
+        const storedData = localStorage.getItem('postsData');
+        if (storedData) {
+            const postsWithLikes = JSON.parse(storedData);
+            const updatedPosts = postsWithLikes.map(item => {
+                if (item.post.id === postId) {
+                    return {
+                        ...item,
+                        post: {
+                            ...item.post,
+                            reactions: currentReactions,
+                            isLiked: button.classList.contains('bi-heart-fill')
+                        }
+                    };
+                }
+                return item;
+            });
+
+            localStorage.setItem('postsData', JSON.stringify(updatedPosts));
+        }
 
 
-     heartCount.textContent = currentReactions;
+        heartCount.textContent = currentReactions;
 
- 
-})
-})
+    
+    })
+    })
 
 }
 
