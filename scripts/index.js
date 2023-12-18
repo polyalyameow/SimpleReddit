@@ -256,17 +256,19 @@ function getAllPosts() {
                 localStorage.setItem('postsData', JSON.stringify(postsData));
                 newlyPublished()
 
-                console.log(postsData);
-                console.log(newPost);
-                console.log(localStorage.postsData)
+                // console.log(postsData);
+                // console.log(newPost);
+                // console.log(localStorage.postsData)
 
-                // document.getElementById('newTitle').value = "";
-                // document.getElementById('newText').value = "";
-                // document.getElementById('newTags').value = "";
+                document.getElementById('newTitle').value = "";
+                document.getElementById('newText').value = "";
+                document.getElementById('newTags').value = "";
 
-                newTitle.reset();
+
 
             })
+
+           
                 
                 // ALL POSTS INCL NEWLY PUBLISHED
 
@@ -308,7 +310,7 @@ function getAllPosts() {
                 document.querySelector(".post").innerHTML = output;  
                 document.querySelector(".created-post").innerHTML = createdPost;
                 
-                attachEventListeners();
+               
             }
             
 
@@ -322,7 +324,7 @@ function getAllPosts() {
 
                 // add comments
                 
-                 addComment = document.querySelectorAll('.addComment');
+                addComment = document.querySelectorAll('.addComment');
                
 
                 addComment.forEach((button, index) => {
