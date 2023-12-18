@@ -9,6 +9,7 @@ function getAllPosts() {
     if (storedData) {
         const postsWithComments = JSON.parse(storedData);
         showPosts(postsWithComments);
+        // allPosts();
     } else {
     fetch('https://dummyjson.com/posts')
         .then((res) => res.json())
@@ -39,6 +40,8 @@ function getAllPosts() {
         }
         )}
     }
+
+        // function allPosts() {}
 
             function showPosts(postsWithComments) {
             
@@ -251,14 +254,25 @@ function getAllPosts() {
             
                 postsData.unshift(newPost)
                 localStorage.setItem('postsData', JSON.stringify(postsData));
-                // newlyPublished()
+                newlyPublished()
+
                 console.log(postsData);
                 console.log(newPost);
                 console.log(localStorage.postsData)
+
+                // document.getElementById('newTitle').value = "";
+                // document.getElementById('newText').value = "";
+                // document.getElementById('newTags').value = "";
+
+                newTitle.reset();
+
+            })
                 
                 // ALL POSTS INCL NEWLY PUBLISHED
 
                function newlyPublished() {
+                output = "";
+                createdPost = "";
                 for (const { post, comments } of  postsData) {
                     
                     // console.log(post.title)
@@ -293,18 +307,22 @@ function getAllPosts() {
                 }}
                 document.querySelector(".post").innerHTML = output;  
                 document.querySelector(".created-post").innerHTML = createdPost;
+                
+                attachEventListeners();
             }
+            
 
-            newlyPublished();
+            
+            // newlyPublished();
 
 
-                document.getElementById('newTitle').value = "";
-                document.getElementById('newText').value = "";
-                document.getElementById('newTags').value = "";
+                // document.getElementById('newTitle').value = "";
+                // document.getElementById('newText').value = "";
+                // document.getElementById('newTags').value = "";
 
                 // add comments
                 
-                const addComment = document.querySelectorAll('.addComment');
+                 addComment = document.querySelectorAll('.addComment');
                
 
                 addComment.forEach((button, index) => {
@@ -363,7 +381,7 @@ function getAllPosts() {
                 
              // comments
 
-             const commentButtons = document.querySelectorAll('.commentBtn');
+              commentButtons = document.querySelectorAll('.commentBtn');
              commentButtons.forEach(button => {
                  button.addEventListener('click', function() {
                      const parentDiv = this.closest('.post__main'); 
@@ -379,7 +397,7 @@ function getAllPosts() {
 
              // likes
 
-             const heartBtn = document.querySelectorAll('.heartBtn');
+              heartBtn = document.querySelectorAll('.heartBtn');
              
 
              
@@ -426,12 +444,12 @@ function getAllPosts() {
              })
 
             
-        })
+        }
             
         let updatedStorage = JSON.parse(localStorage.postsData);
 
 
-}
+
 
 
             
